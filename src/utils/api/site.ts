@@ -12,7 +12,6 @@ export const retrieveCPF = async (id_event: number, cpf: string) => {
     },
   };
 
-  const json = await http.get(`/site/events/${id_event}/search`, options);
-  console.log(json);
-  return json.data ?? false;
+  const res = await http.get(`/site/events/${id_event}/search`, options);
+  return res.data ?? false;
 };
