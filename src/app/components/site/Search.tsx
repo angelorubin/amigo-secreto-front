@@ -9,34 +9,38 @@ type SearchProps = {
 };
 
 export default function Search({ id }: SearchProps) {
-  const [results, setResults] = useState("");
+  const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSearchButton = async (cpf: string) => {
-    if (!cpf) return;
+    try {
+      if (!cpf) return;
 
-    setLoading(true);
+      setLoading(true);
 
-    const res = await api.retrieveCPF(id, cpf);
+      let data = await api.retrievePersonByCPF(id, cpf);
+      console.log(data);
 
-    console.log(res);
-
-    setLoading(false);
-
-    if (!res) {
-      alert("CPF não encontrado.");
+      if (!data) {
+        setLoading(false);
+        alert("CPF não encontrado.");
+      } else {
+        setResults(data);
+      }
+    } catch (error) {
+      console.error("Erro ao recuperar pessoa por CPF:", error);
+      setLoading(false);
+      alert("Ocorreu um erro ao recuperar a pessoa por CPF.");
     }
-
-    setResults(res);
   };
 
   return (
     <section className="bg-gray-900 p-5 rounded">
-      {!results && (
+      {!results ? (
         <SearchForm loading={loading} onSearchButton={handleSearchButton} />
+      ) : (
+        <SearchResult results={results} />
       )}
-
-      {results && <SearchResult res={results} />}
     </section>
   );
 }

@@ -14,8 +14,8 @@ export default function SearchForm({
   const [cpfInput, setCpfInput] = useState("");
 
   return (
-    <div className="flex-col gap-2 text-xl items-center justify-center">
-      <p className="text-center text-sm">Qual seu CPF?</p>
+    <div className="flex-col text-xl items-center justify-center">
+      <p className="text-center text-sm m-1">Qual seu CPF?</p>
 
       <input
         type="text"

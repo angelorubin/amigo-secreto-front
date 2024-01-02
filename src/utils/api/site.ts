@@ -5,13 +5,23 @@ export const retrieveEvent = async (id: number) => {
   return json.data.event ?? false;
 };
 
-export const retrieveCPF = async (id_event: number, cpf: string) => {
-  const options = {
-    params: {
-      cpf,
-    },
-  };
+export const retrievePersonByCPF = async (id_event: number, cpf: string) => {
+  try {
+    const options = {
+      params: {
+        id_event,
+        cpf,
+      },
+    };
 
-  const res = await http.get(`/site/events/${id_event}/search`, options);
-  return res.data ?? false;
+    const res = await http.get(`/site/events/${id_event}/search`, options);
+
+    if (res.status !== 400) {
+      return res.data;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
 };
