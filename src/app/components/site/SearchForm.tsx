@@ -14,14 +14,15 @@ export default function SearchForm({
   const [cpfInput, setCpfInput] = useState("");
 
   return (
-    <div className="flex-col text-xl items-center justify-center">
-      <p className="text-center text-sm m-1">Qual seu CPF?</p>
+    <div className="grid text-xl gap-2 items-center justify-center">
+      <p className="text-center text-md">Qual seu CPF?</p>
 
       <input
+        name="cpf"
         type="text"
         placeholder="digite seu CPF"
         inputMode="numeric"
-        className="w-full p-2 bg-white text-center text-xs outline-none rounded text-black disabled:opacity-20"
+        className="w-full py-2 px-2 bg-white text-center text-md outline-none rounded text-black disabled:opacity-20"
         value={cpfInput}
         onChange={(e) => setCpfInput(escapeCPF(e.target.value))}
         autoFocus
@@ -31,7 +32,7 @@ export default function SearchForm({
       <button
         disabled={loading}
         onClick={() => onSearchButton(cpfInput)}
-        className="w-full bg-blue-800 p-2 mt-2 text-white text-xs rounded">
+        className="w-full bg-blue-800 py-2 px-2 text-white text-md rounded">
         {loading ? "Buscando..." : "Entrar"}
       </button>
     </div>

@@ -19,7 +19,6 @@ export default function Search({ id }: SearchProps) {
       setLoading(true);
 
       let data = await api.retrievePersonByCPF(id, cpf);
-      console.log(data);
 
       if (!data) {
         setLoading(false);

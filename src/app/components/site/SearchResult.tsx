@@ -9,8 +9,8 @@ export default function SearchResult({ results }: SearchResultProps) {
   return (
     <div>
       <p className="text-3xl text-center">{results.person.name}</p>
-      <p className="text-2xl my-3 text-center">Parabéns, você tirou:</p>
-      <p className="text-4xl text-center bg-blue-800 my-5 px-5 py-10 rounded-lg border-2 border-dashed border-blue-300">
+      <p className="text-2xl my-3 text-center">parabéns, você tirou:</p>
+      <p className="flex pb-2 justify-center items-center text-4xl bg-blue-800 rounded-lg border-2 border-dashed border-blue-300">
         {results.personMatched.name}
       </p>
     </div>
