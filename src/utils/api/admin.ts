@@ -1,1 +1,1 @@
-import axios from 'axios'
+import { http } from "@/utils/api/axios";

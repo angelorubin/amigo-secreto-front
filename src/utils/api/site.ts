@@ -1,7 +1,7 @@
 import { http } from "@/utils/api/axios";
 
 export const retrieveEvent = async (id: number) => {
-  const json = await http.get(`/site/events/${id}`);
+  const json = await http(`/site/events/${id}`);
   return json.data.event ?? false;
 };
 

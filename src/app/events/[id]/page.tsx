@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import * as http from "@/utils/api/site";
-import useSWR from "swr";
 import Search from "@/app/components/site/Search";
+import useSWR from 'swr'
 
-// const fetcher = url => fetch(url).then(res => res.data)
+const retrieveEvent = async (id: string) => {
+  return await http.retrieveEvent(parseInt(id));
+}
 
 type EventProps = {
   params: {
@@ -13,7 +14,7 @@ type EventProps = {
 };
 
 export default async function Page({ params }: EventProps) {
-  const eventItem = await http.retrieveEvent(parseInt(params.id));
+  const eventItem = await retrieveEvent(params.id)
 
   if (!eventItem || !eventItem.status) {
     return redirect("/");
