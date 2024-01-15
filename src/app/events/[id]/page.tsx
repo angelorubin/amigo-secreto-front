@@ -1,23 +1,20 @@
-import { redirect } from "next/navigation";
-import * as http from "@/utils/api/site";
-import Search from "@/app/components/site/Search";
+import { redirect } from "next/navigation"
+import * as http from "@/utils/api/site"
+import Search from "@/app/components/site/Search"
 import useSWR from 'swr'
-
-const retrieveEvent = async (id: string) => {
-  return await http.retrieveEvent(parseInt(id));
-}
 
 type EventProps = {
   params: {
-    id: string;
-  };
-};
+    id: string
+  }
+}
 
 export default async function Page({ params }: EventProps) {
-  const eventItem = await retrieveEvent(params.id)
 
-  if (!eventItem || !eventItem.status) {
-    return redirect("/");
+  const event: any = await http.retrieveEvent(parseInt(params.id))
+
+  if (!event || !event.status) {
+    // return redirect("/")
   }
 
   return (
@@ -29,18 +26,18 @@ export default async function Page({ params }: EventProps) {
               Amigo Secreto
             </h1>
             <h1 className="text-white text-md mb-5 mt-2 text-center">
-              {eventItem.title}
+              {event.title}
             </h1>
-            <p className="text-center text-xs mb-3">{eventItem.description}</p>
+            <p className="text-center text-xs mb-3">{event.description}</p>
           </header>
         </main>
 
-        <Search id={eventItem.id} />
+        <Search id={event.id} />
 
         <footer className="text-center text-sm mt-3">
           © Criado por Angelo Rubin - 2024
         </footer>
       </div>
     </div>
-  );
+  )
 }

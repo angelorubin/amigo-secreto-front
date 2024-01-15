@@ -1,7 +1,7 @@
 import { http } from "@/utils/api/axios";
 
 export const retrieveEvent = async (id: number) => {
-  const json = await http(`/site/events/${id}`);
+  const json = await fetch(`/site/events/${id}`);
   return json.data.event ?? false;
 };
 
@@ -14,7 +14,7 @@ export const retrievePersonByCPF = async (id_event: number, cpf: string) => {
       },
     };
 
-    const res = await http.get(`/site/events/${id_event}/search`, options);
+    const res = await http.get(`/ site / events / ${id_event} / search`, options);
 
     if (res.status !== 400) {
       return res.data;
