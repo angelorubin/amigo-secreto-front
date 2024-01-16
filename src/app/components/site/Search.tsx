@@ -2,7 +2,7 @@
 import { useState } from "react";
 import SearchForm from "@/app/components/site/SearchForm";
 import SearchResult from "@/app/components/site/SearchResult";
-import * as api from "@/utils/api/site";
+import * as http from "@/utils/api/site";
 
 type SearchProps = {
   id: number;
@@ -18,7 +18,7 @@ export default function Search({ id }: SearchProps) {
 
       setLoading(true);
 
-      let data = await api.retrievePersonByCPF(id, cpf);
+      let data = await http.retrievePersonByCPF(id, cpf);
 
       if (!data) {
         setLoading(false);

@@ -1,3 +1,4 @@
+'use client'
 type SearchResultProps = {
   results: {
     person: { name: string };
