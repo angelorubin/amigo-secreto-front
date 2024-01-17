@@ -29,7 +29,7 @@ export default function Search({ id }: SearchProps) {
     } catch (error) {
       console.error("Erro ao recuperar pessoa por CPF:", error);
       setLoading(false);
-      alert("Ocorreu um erro ao recuperar a pessoa por CPF.");
+      alert("Ocorreu um erro ao tentar recuperar a pessoa pelo CPF.");
     }
   };
 
