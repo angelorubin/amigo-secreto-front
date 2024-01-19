@@ -5,7 +5,6 @@ export const retrieveEvent = async (id: number) => {
   return res.data
 };
 
-
 export const retrievePersonByCPF = async (id_event: number, cpf: string) => {
   try {
     const options = {
