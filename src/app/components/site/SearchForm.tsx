@@ -1,5 +1,5 @@
 "use client";
-import { escapeCPF } from "@/utils/escapeCPF";
+import { escapeCPF } from "@/utils/escape-cpf";
 import { useState } from "react";
 
 type SearchFormProps = {
