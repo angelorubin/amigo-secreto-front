@@ -6,14 +6,15 @@ type Props = {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
   disabled?: boolean
+  errorStatus?: boolean
   errorMessage?: string
   className?: string
   id: string
   name?: string
 }
 
-export const InputField = (props: Props) => {
-  const { id, type, value, onChange, placeholder, disabled, errorMessage } = props
+export default function InputField(props: Props) {
+  const { id, type, value, onChange, errorStatus, placeholder, disabled, errorMessage } = props
 
   return (
     <div>
@@ -23,10 +24,23 @@ export const InputField = (props: Props) => {
         disabled={disabled}
         placeholder={placeholder}
         value={value}
-        type={type}
-        className={`border-b-2 ${errorMessage ? 'border-red-600' : 'border-gray-900'} w-full block text-lg p-3 outline-none rounded bg-gray-900 text-white`}
+        type={type || 'text'}
+        className={`
+        ${errorStatus ? 'border-b-2 border-b-red-600' : 'border-b-2 focus:border-b-white'}
+        w-full
+        block
+        text-lg
+        p-3
+        outline-none
+        rounded
+        bg-gray-800
+        text-white
+        `}
       />
-      {errorMessage && <div className="">{errorMessage}</div>}
+      {errorStatus ? <div className="text-right text-sm text-red-600">
+        {errorMessage}
+      </div> :
+        null}
     </div>
   )
 }
