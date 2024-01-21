@@ -1,18 +1,19 @@
 import { getCookie } from "cookies-next"
 import { cookies } from "next/headers"
-import http from 'axios'
+import { http } from './axios'
 
 export const pingAdmin = async () => {
   try {
-    const token = getCookie('token', { cookies })
+    const token = getCookie('token')
 
-    console.log(token)
-
-    await http.get('/admin/ping', {
+    await http.post('/admin/ping', {
       headers: {
-        'Authorization': `Token ${token}`
+        'Authorization': `${token}`
       }
     })
+
+    console.log(JSON.stringify(token))
+   
     return true
   } catch (error) {
     return false

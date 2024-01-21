@@ -24,9 +24,9 @@ export default function InputField(props: Props) {
         disabled={disabled}
         placeholder={placeholder}
         value={value}
-        type={type || 'text'}
+        type={type || "text"}
         className={`
-        ${errorStatus ? 'border-b-2 border-b-red-600' : 'border-b-2 focus:border-b-white'}
+        ${errorStatus ? "border-b-2 border-red-600" : "focus:border-b-2 focus:border-b-white"}
         w-full
         block
         text-lg
@@ -34,13 +34,11 @@ export default function InputField(props: Props) {
         outline-none
         rounded
         bg-gray-800
-        text-white
         `}
       />
-      {errorStatus ? <div className="text-right text-sm text-red-600">
-        {errorMessage}
-      </div> :
-        null}
+      {errorStatus ? (
+        <div className="text-right text-sm text-red-600">{errorMessage}</div>
+      ) : null}
     </div>
-  )
+  );
 }

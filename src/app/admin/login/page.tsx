@@ -1,9 +1,15 @@
 'use client'
 import InputField from "@/app/components/admin/InputField"
 import Button from '@/app/components/admin/Button'
-import { useState, ChangeEvent } from "react"
+import { useState, ChangeEvent, ReactEventHandler, EventHandler } from "react"
+import { login } from "@/utils/api/admin";
+import { redirect, useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 
 export default function Page() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false);
+  const [warning, setWarning] = useState('');
   const [inputValues, setInputValues] = useState({
     email: '',
     password: ''
@@ -19,33 +25,55 @@ export default function Page() {
     }))
   }
 
-  return (
-    <div className="w-full my-3">
-      {JSON.stringify(inputValues)}
-      <h1 className="mb-3">Painel Admin - Login</h1>
-      <form className="grid gap-3 mb-3">
-        <InputField
-          id="email"
-          type="text"
-          value={inputValues.email}
-          onChange={handleChange}
-          placeholder="email"
-          errorStatus={false}
-          errorMessage={'e-mail inválido'}
-        />
+  const handleClick = async (e: Event) => {
+    e.preventDefault()
 
+    if (inputValues.password) {
+      setWarning('')
+      setLoading(true)
+      const token = await login(inputValues.email, inputValues.password);
+
+      if (!token) {
+        setWarning('Acesso negado!')
+        setTimeout(() => {
+          setLoading(false)
+          setInputValues(prevVal => {
+            return {
+              ...prevVal,
+              password: ''
+            }
+          })
+        }, 2000)
+      } else {
+        setCookie('token', token)
+        router.push('/admin')
+      }
+    }
+  }
+
+  return (
+    <div className="w-full my-3 border-1">
+      <h1 className="mb-3 font-bold text-xl">Painel Admin - Login</h1>
+      <p className="my-3">Qual a senha secreta?</p>
+      <form className="grid gap-3 mb-3">
         <InputField
           id="password"
           type="password"
           value={inputValues.password}
           onChange={handleChange}
           placeholder="password"
-          errorStatus={true}
-          errorMessage={'e-mail inválido'}
+          errorMessage={"password inválido"}
         />
 
-        <Button className="text- bg-blue-500 py-3 font-bold" text="Entrar" />
+        <Button
+          onClick={handleClick}
+          disabled={loading}
+          className="my-3 p-3 rounded font-bold hover:bg-gray-600 bg-gray-700"
+          text="Entrar"
+        />
+
+        {loading && <div className="border border-dashed border-gray-400 p-3">{warning}</div>}
       </form>
     </div>
-  )
+  );
 }
