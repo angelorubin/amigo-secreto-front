@@ -1,10 +1,12 @@
+'use client'
 import * as apiServer from '@/utils/api/server'
 import { redirect } from 'next/navigation'
+import { getCookie } from "cookies-next"
 
-export default async function Page() {
-  const logged = await apiServer.pingAdmin()
-  
-  if (!logged) {
+export default function Page() {
+  const isLogged = getCookie("token");
+
+  if (!isLogged) {
     redirect('/admin/login')
   }
 

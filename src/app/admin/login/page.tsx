@@ -1,10 +1,10 @@
 'use client'
 import InputField from "@/app/components/admin/InputField"
 import Button from '@/app/components/admin/Button'
-import { useState, ChangeEvent, ReactEventHandler, EventHandler } from "react"
+import { useState, ChangeEvent } from "react"
 import { login } from "@/utils/api/admin";
 import { redirect, useRouter } from "next/navigation";
-import { setCookie } from "cookies-next";
+import { setCookies } from "@/utils/api/server"
 
 export default function Page() {
   const router = useRouter()
@@ -45,7 +45,7 @@ export default function Page() {
           })
         }, 2000)
       } else {
-        setCookie('token', token)
+        setCookies(token)
         router.push('/admin')
       }
     }
