@@ -2,9 +2,8 @@
 import InputField from "@/app/components/admin/InputField"
 import Button from '@/app/components/admin/Button'
 import { useState, ChangeEvent } from "react"
-import { login } from "@/utils/api/admin";
-import { redirect, useRouter } from "next/navigation";
-import { setCookies } from "@/utils/api/server"
+import { login, setToken } from "./actions";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const router = useRouter()
@@ -31,7 +30,7 @@ export default function Page() {
     if (inputValues.password) {
       setWarning('')
       setLoading(true)
-      const token = await login(inputValues.email, inputValues.password);
+      const token = await login(inputValues.email, inputValues.password)
 
       if (!token) {
         setWarning('Acesso negado!')
@@ -45,7 +44,7 @@ export default function Page() {
           })
         }, 2000)
       } else {
-        setCookies(token)
+        setToken(token)
         router.push('/admin')
       }
     }
@@ -72,7 +71,9 @@ export default function Page() {
           text="Entrar"
         />
 
-        {loading && <div className="border border-dashed border-gray-400 p-3">{warning}</div>}
+        {loading ?
+          <div className="border border-dashed border-gray-400 p-3">{warning}</div> :
+          null}
       </form>
     </div>
   );

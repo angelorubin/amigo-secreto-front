@@ -1,14 +1,21 @@
 'use client'
-import * as apiServer from '@/utils/api/server'
-import { redirect } from 'next/navigation'
-import { getCookie } from "cookies-next"
+import { verifyToken } from './actions'
+import { useRouter } from 'next/navigation'
 
-export default function Page() {
-  const isLogged = getCookie("token");
+async function VerifyToken() {
+  const res = await verifyToken()
+  return res
+}
+
+export default async function Page() {
+  const isLogged = await VerifyToken()
+  const router = useRouter()
 
   if (!isLogged) {
-    redirect('/admin/login')
+    router.push('/admin/login')
   }
 
-  return (<h1>Painel ADM</h1>)
+  return (
+    <h1>Painel ADM</h1>
+  )
 }
