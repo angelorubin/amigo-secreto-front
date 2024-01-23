@@ -1,17 +1,15 @@
 'use client'
 import { verifyToken } from './actions'
-import { useRouter } from 'next/navigation'
+import useSWR from 'swr'
+import { useRouter, redirect } from 'next/navigation'
 
-async function VerifyToken() {
-  const res = await verifyToken()
-  return res
-}
+const fetcher = url => verifyToken().then(res => res)
 
 export default async function Page() {
-  const isLogged = await VerifyToken()
+  const { data, error } = useSWR('/admin/login', fetcher, { revalidateOnFocus: true })
   const router = useRouter()
 
-  if (!isLogged) {
+  if (error) {
     router.push('/admin/login')
   }
 

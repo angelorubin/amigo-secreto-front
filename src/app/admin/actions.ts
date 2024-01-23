@@ -14,7 +14,7 @@ export const verifyToken = async () => {
       }
     })
 
-    if (res) return true
+    return res
   } catch (error) {
     return false
   }
