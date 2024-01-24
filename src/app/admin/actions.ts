@@ -1,8 +1,8 @@
-'use server'
 import { http } from '@/utils/api/axios'
 import { cookies } from "next/headers"
 
 export async function verifyToken() {
+  'use server'
   try {
     const token = JSON.stringify(cookies().get('token')?.value)
 
