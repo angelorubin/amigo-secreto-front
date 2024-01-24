@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import Search from "@/app/components/site/Search"
 import useSWR from 'swr'
 import * as http from '@/utils/api/site'
-import Loading from '@/app/components/loading'
+import Loading from '@/app/components/shared/loading'
 
 type EventProps = {
   params: {
