@@ -1,54 +1,54 @@
-'use client'
-import InputField from "@/app/components/admin/InputField"
-import Button from '@/app/components/admin/Button'
-import { useState, ChangeEvent } from "react"
+"use client";
+import InputField from "@/app/components/admin/InputField";
+import Button from "@/app/components/admin/Button";
+import { useState, ChangeEvent } from "react";
 import { login, setToken } from "./actions";
-import { useRouter, redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const router = useRouter()
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [warning, setWarning] = useState('');
+  const [warning, setWarning] = useState("");
   const [inputValues, setInputValues] = useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: "",
+  });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const id = event.currentTarget.id
-    const value = event.currentTarget.value
+    const id = event.currentTarget.id;
+    const value = event.currentTarget.value;
 
     setInputValues((prevValues) => ({
       ...prevValues,
-      [id]: value
-    }))
-  }
+      [id]: value,
+    }));
+  };
 
   const handleClick = async (e: Event) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (inputValues.password) {
-      setWarning('')
-      setLoading(true)
-      const token = await login(inputValues.email, inputValues.password)
+      setWarning("");
+      setLoading(true);
+      const token = await login(inputValues.email, inputValues.password);
 
       if (!token) {
-        setWarning('Acesso negado!')
+        setWarning("Acesso negado!");
         setTimeout(() => {
-          setLoading(false)
-          setInputValues(prevVal => {
+          setLoading(false);
+          setInputValues((prevVal) => {
             return {
               ...prevVal,
-              password: ''
-            }
-          })
-        }, 2000)
+              password: "",
+            };
+          });
+        }, 2000);
       } else {
-        setToken(token)
-        router.push('/admin')
+        setToken(token);
+        router.push("/admin");
       }
     }
-  }
+  };
 
   return (
     <div className="w-full my-3 border-1">
@@ -71,9 +71,11 @@ export default function Page() {
           text="Entrar"
         />
 
-        {loading ?
-          <div className="border border-dashed border-gray-400 p-3">{warning}</div> :
-          null}
+        {loading ? (
+          <div className="border border-dashed border-gray-400 p-3">
+            {warning}
+          </div>
+        ) : null}
       </form>
     </div>
   );
