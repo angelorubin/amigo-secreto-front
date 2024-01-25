@@ -1,6 +1,6 @@
 'use server'
 import { http } from "@/utils/api/axios"
-import { cookies } from 'next/headers'
+import { setCookie } from 'cookies-next'
 
 export const login = async (email: string, password: string) => {
   try {
@@ -10,5 +10,3 @@ export const login = async (email: string, password: string) => {
     return false
   }
 }
-
-export const setToken = (token: string) => JSON.stringify(cookies().set('token', token))

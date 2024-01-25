@@ -1,9 +1,11 @@
 "use client";
 import InputField from "@/app/components/admin/InputField";
 import Button from "@/app/components/admin/Button";
-import { useState, ChangeEvent } from "react";
-import { login, setToken } from "./actions";
+import { useState, ChangeEvent, useEffect } from "react";
+import { login } from "./actions";
 import { useRouter } from "next/navigation";
+import { deleteCookie, setCookie } from "cookies-next";
+
 
 export default function Page() {
   const router = useRouter();
@@ -29,10 +31,17 @@ export default function Page() {
 
     if (inputValues.password) {
       setWarning("");
+
       setLoading(true);
+
       const token = await login(inputValues.email, inputValues.password);
 
+      setCookie('token', token)
+
+      router.push("/admin")
+
       if (!token) {
+        setCookie('token', '')
         setWarning("Acesso negado!");
         setTimeout(() => {
           setLoading(false);
@@ -43,9 +52,6 @@ export default function Page() {
             };
           });
         }, 2000);
-      } else {
-        setToken(token);
-        router.push("/admin");
       }
     }
   };

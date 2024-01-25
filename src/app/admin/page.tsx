@@ -1,18 +1,19 @@
 "use client";
+import { deleteCookie } from "cookies-next";
 import { redirect, useRouter } from "next/navigation";
 import { pingAdmin } from "@/utils/api/server";
 import { useCustomSWR } from "../hooks/useCustomSWR";
 import Loading from "../components/shared/loading";
-import { deleteCookie } from "cookies-next";
 
 const fetchData = async () => await pingAdmin();
 
 export default function Page() {
   const router = useRouter();
   const { data, error, isLoading } = useCustomSWR("/admin/ping", fetchData, {
-    revalidateOnReconnect: true,
+    revalidateIfStale: true,
     revalidateOnFocus: true,
-    refreshInterval: 1000,
+    revalidateOnReconnect: true,
+    revalidateOnMount: true
   });
 
   if (isLoading) return <Loading />;
@@ -23,11 +24,11 @@ export default function Page() {
 
   return (
     <>
-      <pre>{JSON.stringify(data)}</pre>
       <h1> Painel ADM</h1>
       <button
         onClick={() => {
           deleteCookie("token");
+          router.push('/admin/login')
         }}>
         sair
       </button>

@@ -1,19 +1,19 @@
 "use server";
-import { getCookie } from "cookies-next";
+import { getCookie, hasCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import { http } from "./axios";
 
 export async function pingAdmin() {
   try {
-    const token = getCookie("token", { cookies });
+    const hasToken = hasCookie("token", { cookies });
 
-    const res: boolean = await http.get("/admin/ping", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (res) {
+    if (hasToken) {
+      const token = getCookie("token", { cookies });
+      await http.get("/admin/ping", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       return true;
     } else {
       return false;
