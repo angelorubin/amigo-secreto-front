@@ -1,5 +1,5 @@
 "use server";
-import { getCookie, hasCookie } from "cookies-next";
+import { deleteCookie, getCookie, hasCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import { http } from "./axios";
 
@@ -16,9 +16,11 @@ export async function pingAdmin() {
       })
       return true;
     } else {
+      deleteCookie('token')
       return false;
     }
   } catch (error) {
+    deleteCookie('token')
     return false;
   }
 }

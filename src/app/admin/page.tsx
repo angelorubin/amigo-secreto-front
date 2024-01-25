@@ -1,37 +1,39 @@
-"use client";
-import { deleteCookie } from "cookies-next";
-import { redirect, useRouter } from "next/navigation";
-import { pingAdmin } from "@/utils/api/server";
-import { useCustomSWR } from "../hooks/useCustomSWR";
-import Loading from "../components/shared/loading";
+"use client"
+import { deleteCookie } from "cookies-next"
+import { useRouter } from "next/navigation"
+import { pingAdmin } from "@/utils/api/server"
+import { useCustomSWR } from "../hooks/useCustomSWR"
+import Loading from "../components/shared/loading"
 
-const fetchData = async () => await pingAdmin();
+const fetchData = async () => await pingAdmin()
 
 export default function Page() {
-  const router = useRouter();
+  const router = useRouter()
   const { data, error, isLoading } = useCustomSWR("/admin/ping", fetchData, {
     revalidateIfStale: true,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
     revalidateOnMount: true
-  });
+  })
 
-  if (isLoading) return <Loading />;
+  const logout = () => {
+    deleteCookie("token")
+    router.push('/admin/login')
+  }
+
+  if (isLoading) return <Loading />
 
   if (!data) {
-    return redirect("/admin/login");
+    router.push("/admin/login")
   }
 
   return (
     <>
       <h1> Painel ADM</h1>
       <button
-        onClick={() => {
-          deleteCookie("token");
-          router.push('/admin/login')
-        }}>
+        onClick={logout}>
         sair
       </button>
     </>
-  );
+  )
 }
