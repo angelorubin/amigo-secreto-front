@@ -1,46 +1,17 @@
 'use client'
-import { useEffect, useState } from 'react'
 import { redirect } from 'next/navigation'
 import { pingAdmin } from '@/utils/api/server'
+import { useCustomSWR } from '../hooks/useCustomSWR'
+import Loading from '../components/shared/loading'
 
-export default async function Page() {
-  const [isLogged, setIsLogged] = useState(false)
+const fetchData = async () => await pingAdmin()
 
-  useEffect(() => {
+export default function Page() {
+  const { data, error, isLoading } = useCustomSWR('/admin/ping', fetchData, { revalidateOnReconnect: true })
 
-    const fetchData = async () => {
-      await pingAdmin().then(res => res)
-    }
+  if (isLoading) return <Loading />
 
-    const res = fetchData()
-
-    setIsLogged(res)
-
-    /**
-    const realizarPing = async () => {
-      try {
-        // Chame a função pingAdmin no lado do cliente
-        const sucesso = await pingAdmin();
-
-        console.log(sucesso)
-
-        // Faça algo com o resultado, se necessário
-        if (sucesso) {
-          console.log('Ping para o admin bem-sucedido!');
-        } else {
-          console.error('Erro ao pingar o admin.');
-        }
-      } catch (erro) {
-        console.error('Erro ao executar pingAdmin:', erro);
-      }
-    }
-
-    realizarPing()
-    */
-  }, [])
-
-
-  if (!isLogged) {
+  if (!data) {
     return redirect('/admin/login')
   }
 
@@ -49,15 +20,17 @@ export default async function Page() {
     return ('Loading ...')
   }
 
-  if (!isValid) {
-    redirect('/admin/login')
-  }
-  */
+    if (!isValid) {
+      redirect('/admin/login')
+    }
+    */
 
-  return (
-    <>
-      <pre className='text-white'>{JSON.stringify(isLogged)}</pre>
-      <h1> Painel ADM</h1>
-    </>
-  )
+  else {
+    return (
+      <>
+        <pre>{JSON.stringify(data)}</pre>
+        <h1> Painel ADM</h1>
+      </>
+    )
+  }
 }

@@ -3,7 +3,7 @@ import InputField from "@/app/components/admin/InputField"
 import Button from '@/app/components/admin/Button'
 import { useState, ChangeEvent } from "react"
 import { login, setToken } from "./actions";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 
 export default function Page() {
   const router = useRouter()
