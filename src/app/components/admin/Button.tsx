@@ -1,7 +1,7 @@
 type Props = {
   text?: string
   className?: string
-  onClick: () => void
+  onClick: any
   disabled?: boolean
 }
 

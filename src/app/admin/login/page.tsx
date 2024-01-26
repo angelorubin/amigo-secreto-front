@@ -1,59 +1,59 @@
-"use client";
-import InputField from "@/app/components/admin/InputField";
-import Button from "@/app/components/admin/Button";
-import { useState, ChangeEvent } from "react";
-import { login } from "./actions";
-import { useRouter } from "next/navigation";
-import { deleteCookie, setCookie } from "cookies-next";
+"use client"
+import InputField from "@/app/components/admin/InputField"
+import Button from "@/app/components/admin/Button"
+import { useState, ChangeEvent } from "react"
+import { login } from "./actions"
+import { useRouter } from "next/navigation"
+import { deleteCookie, setCookie } from "cookies-next"
 
 
 export default function Page() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [warning, setWarning] = useState("");
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [warning, setWarning] = useState(null)
   const [inputValues, setInputValues] = useState({
     email: "",
     password: "",
-  });
+  })
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const id = event.currentTarget.id;
-    const value = event.currentTarget.value;
+    const id = event.currentTarget.id
+    const value = event.currentTarget.value
 
     setInputValues((prevValues) => ({
       ...prevValues,
       [id]: value,
-    }));
-  };
+    }))
+  }
 
-  const handleClick = async (e: Event) => {
-    e.preventDefault();
+  const handleClick = async (event: any) => {
+    event.preventDefault()
 
     if (inputValues.password) {
-      setWarning("");
+      setWarning(null)
+      setLoading(true)
 
-      setLoading(true);
-
-      const token = await login(inputValues.email, inputValues.password);
-
-      setCookie('token', token)
-
-      router.push("/admin")
+      const token = await login(inputValues.email, inputValues.password)
 
       if (!token) {
-        setWarning("Acesso negado!");
+        setWarning("Acesso negado!")
+
         setTimeout(() => {
-          setLoading(false);
+          setLoading(false)
           setInputValues((prevVal) => {
             return {
               ...prevVal,
               password: "",
-            };
-          });
-        }, 2000);
+            }
+          })
+        }, 2000)
+      }
+      else {
+        setCookie('token', token)
+        router.push("/admin")
       }
     }
-  };
+  }
 
   return (
     <div className="w-full my-3 border-1">
@@ -83,5 +83,5 @@ export default function Page() {
         ) : null}
       </form>
     </div>
-  );
+  )
 }
