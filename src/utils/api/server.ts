@@ -1,21 +1,29 @@
 "use server";
-import { deleteCookie, getCookie, hasCookie } from "cookies-next"
+import { getCookie, deleteCookie } from "cookies-next"
 import { cookies } from "next/headers"
 import { http } from "./axios"
 
 export async function verifyToken() {
-  const token = getCookie('token', { cookies })
+  try {
+    const token = getCookie('token', { cookies })
 
-  const result = await http.get("/admin/ping", {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-  })
+    const isAuthenticated = await http("/admin/ping", {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    })
 
-  if (result) {
-    return true
-  }
-  else {
+    isAuthenticated ? true : false
+
+  } catch (error) {
     return false
   }
+}
+
+export async function delCookie(cookieName: string) {
+  deleteCookie(cookieName, { cookies })
+}
+
+export async function setCookie(cookieKey: string, cookieValue: any) {
+  setCookie(cookieKey, cookieValue)
 }

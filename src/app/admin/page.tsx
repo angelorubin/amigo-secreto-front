@@ -1,37 +1,32 @@
-"use client"
-import { deleteCookie, getCookie } from "cookies-next"
-import { useRouter } from "next/navigation"
-import { verifyToken } from "@/utils/api/server"
+import { redirect } from "next/navigation"
+import { verifyToken, delCookie } from "@/utils/api/server"
 import { useCustomSWR } from "../hooks/useCustomSWR"
 import Loading from "../components/shared/loading"
+import Logout from './logout'
 
-const fetchData = async () => verifyToken()
+const fetchData = async () => await verifyToken()
 
-export default function Page() {
-  const router = useRouter()
-  const { data, error, isLoading } = useCustomSWR('/admin/ping', fetchData, {
-    revalidateOnFocus: true
-  })
+export default async function Page() {
+  // const { data, error, isLoading } = useCustomSWR('/admin/ping', fetchData)
+  const data = await verifyToken()
 
-  const logout = () => {
-    deleteCookie("token")
-    router.push('/admin/login')
+  const logout = async () => {
+    'use server'
+    delCookie('token')
+    redirect('/admin/login')
   }
 
   if (!data) {
-    router.push('/admin/login')
+    // redirect('/admin/login')
   }
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
 
   return (
     <>
       <pre>{JSON.stringify(data)}</pre>
       <h1> Painel ADM</h1>
-      <button
-        onClick={logout}>
-        sair
-      </button>
+      <Logout logout={logout} />
     </>
   )
 }

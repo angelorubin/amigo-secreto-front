@@ -1,16 +1,16 @@
 "use client"
+import { setCookie } from 'cookies-next';
+import { ReactNode, MouseEvent } from 'react';
 import InputField from "@/app/components/admin/InputField"
 import Button from "@/app/components/admin/Button"
 import { useState, ChangeEvent } from "react"
 import { login } from "./actions"
 import { useRouter } from "next/navigation"
-import { deleteCookie, setCookie } from "cookies-next"
-
 
 export default function Page() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [warning, setWarning] = useState(null)
+  const [alert, setAlert] = useState({ status: false, message: '' })
   const [inputValues, setInputValues] = useState({
     email: "",
     password: "",
@@ -26,29 +26,28 @@ export default function Page() {
     }))
   }
 
-  const handleClick = async (event: any) => {
+  const handleClick = async (event: MouseEvent<ReactNode>) => {
     event.preventDefault()
 
     if (inputValues.password) {
-      setWarning(null)
-      setLoading(true)
-
-      const token = await login(inputValues.email, inputValues.password)
+      const token = await login('', inputValues.password)
 
       if (!token) {
-        setWarning("Acesso negado!")
+        setAlert({ status: true, message: "acesso negado" })
 
-        setTimeout(() => {
-          setLoading(false)
-          setInputValues((prevVal) => {
-            return {
-              ...prevVal,
-              password: "",
-            }
-          })
-        }, 2000)
+        setInterval(() => {
+          setAlert({ status: false, message: "" })
+        }, 3000)
+
+        setInputValues((prevVal) => {
+          return {
+            ...prevVal,
+            password: "",
+          }
+        })
       }
       else {
+        // setAlert({ status: false, message: '' })
         setCookie('token', token)
         router.push("/admin")
       }
@@ -76,9 +75,9 @@ export default function Page() {
           text="Entrar"
         />
 
-        {loading ? (
-          <div className="border border-dashed border-gray-400 p-3">
-            {warning}
+        {alert.status ? (
+          <div className="grid justify-center border border-dashed text-red-700 border-red-400 p-3">
+            {alert.message}
           </div>
         ) : null}
       </form>

@@ -1,6 +1,5 @@
 'use server'
 import { http } from "@/utils/api/axios"
-import { setCookie } from 'cookies-next'
 
 export const login = async (email: string, password: string) => {
   try {
