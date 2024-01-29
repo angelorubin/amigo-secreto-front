@@ -1,58 +1,56 @@
-"use client"
-import { setCookie } from 'cookies-next';
-import { ReactNode, MouseEvent } from 'react';
-import InputField from "@/app/components/admin/InputField"
-import Button from "@/app/components/admin/Button"
-import { useState, ChangeEvent } from "react"
-import { login } from "./actions"
-import { useRouter } from "next/navigation"
+"use client";
+import { setCookie } from "cookies-next";
+import { ReactNode, MouseEvent } from "react";
+import InputField from "@/app/components/admin/InputField";
+import Button from "@/app/components/admin/Button";
+import { useState, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
+import * as api from "@/utils/api/admin";
 
 export default function Page() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [alert, setAlert] = useState({ status: false, message: '' })
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState({ status: false, message: "" });
   const [inputValues, setInputValues] = useState({
     email: "",
     password: "",
-  })
+  });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const id = event.currentTarget.id
-    const value = event.currentTarget.value
+    const id = event.currentTarget.id;
+    const value = event.currentTarget.value;
 
     setInputValues((prevValues) => ({
       ...prevValues,
       [id]: value,
-    }))
-  }
+    }));
+  };
 
   const handleClick = async (event: MouseEvent<ReactNode>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (inputValues.password) {
-      const token = await login('', inputValues.password)
+      const token = await api.login("", inputValues.password);
 
       if (!token) {
-        setAlert({ status: true, message: "acesso negado" })
+        setAlert({ status: true, message: "Acesso negado." });
 
         setInterval(() => {
-          setAlert({ status: false, message: "" })
-        }, 3000)
+          setAlert({ status: false, message: "" });
+        }, 2000);
 
         setInputValues((prevVal) => {
           return {
             ...prevVal,
             password: "",
-          }
-        })
-      }
-      else {
-        // setAlert({ status: false, message: '' })
-        setCookie('token', token)
-        router.push("/admin")
+          };
+        });
+      } else {
+        setCookie("token", token);
+        router.push("/admin");
       }
     }
-  }
+  };
 
   return (
     <div className="w-full my-3 border-1">
@@ -82,5 +80,5 @@ export default function Page() {
         ) : null}
       </form>
     </div>
-  )
+  );
 }

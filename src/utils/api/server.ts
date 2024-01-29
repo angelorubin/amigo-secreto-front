@@ -1,29 +1,34 @@
 "use server";
-import { getCookie, deleteCookie } from "cookies-next"
-import { cookies } from "next/headers"
-import { http } from "./axios"
+import { getCookie, deleteCookie } from "cookies-next";
+import { http } from "./axios";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-export async function verifyToken() {
+export const verifyToken = async () => {
   try {
-    const token = getCookie('token', { cookies })
+    const token = getCookie("token", { cookies });
 
-    const isAuthenticated = await http("/admin/ping", {
+    if (!token) {
+      // Se o cookie não estiver presente, redirecione para a página de login
+      redirect("/admin/login");
+    }
+
+    await http.get("/admin/ping", {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-    })
+    });
 
-    isAuthenticated ? true : false
-
+    return true;
   } catch (error) {
-    return false
+    return false;
   }
-}
+};
 
-export async function delCookie(cookieName: string) {
-  deleteCookie(cookieName, { cookies })
-}
+export const delCookie = async (cookieName: string) => {
+  deleteCookie(cookieName, { cookies });
+};
 
-export async function setCookie(cookieKey: string, cookieValue: any) {
-  setCookie(cookieKey, cookieValue)
-}
+export const setCookie = (cookieKey: string, cookieValue: any) => {
+  setCookie(cookieKey, cookieValue);
+};

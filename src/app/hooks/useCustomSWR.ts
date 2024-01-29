@@ -1,9 +1,13 @@
-import useSWR from 'swr';
+import useSWR from "swr";
 
-export const useCustomSWR = (endpoint: string, customFetcher: any, options = {}) => {
-  const apiUrl = `https://localhost:3001${endpoint}`;
+export const useCustomSWR = (
+  key: string,
+  endpoint: string,
+  customFetcher: any,
+) => {
+  const apiUrl = `https://localhost:3001/${endpoint}`;
 
-  const fetcher = async () => await customFetcher(apiUrl)
+  const fetcher = async () => await customFetcher(apiUrl);
 
-  return useSWR(apiUrl, fetcher, options);
+  return useSWR(endpoint, fetcher);
 };

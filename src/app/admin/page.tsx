@@ -1,32 +1,16 @@
-import { redirect } from "next/navigation"
-import { verifyToken, delCookie } from "@/utils/api/server"
-import { useCustomSWR } from "../hooks/useCustomSWR"
-import Loading from "../components/shared/loading"
-import Logout from './logout'
-
-const fetchData = async () => await verifyToken()
+import { redirect } from "next/navigation";
+import { deleteCookie, getCookie } from "cookies-next";
+import { verifyToken } from "@/utils/api/server";
+import Loading from "@/app/components/shared/loading";
+import Logout from "@/app/components/shared/logout";
+import { AdminPage } from "@/app/components/admin/AdminPage";
 
 export default async function Page() {
-  // const { data, error, isLoading } = useCustomSWR('/admin/ping', fetchData)
-  const data = await verifyToken()
+  const logged = await verifyToken();
 
-  const logout = async () => {
-    'use server'
-    delCookie('token')
-    redirect('/admin/login')
+  if (!logged) {
+    redirect("/admin/login");
   }
 
-  if (!data) {
-    // redirect('/admin/login')
-  }
-
-  // if (isLoading) return <Loading />
-
-  return (
-    <>
-      <pre>{JSON.stringify(data)}</pre>
-      <h1> Painel ADM</h1>
-      <Logout logout={logout} />
-    </>
-  )
+  return <AdminPage />;
 }
