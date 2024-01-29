@@ -3,6 +3,7 @@ import { http } from "@/utils/api/axios";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 
+// Admin Login
 export const login = async (email: string, password: string) => {
   try {
     const json = await http.post("/admin/login", { email, password });
@@ -12,16 +13,16 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-// Events
+// Admin Events
 export const getEvents = async () => {
   try {
-    const token = getCookie("token");
+    const token = getCookie('token', { cookies })
 
-    const json = await http.get("/admin/events", {
+    const json = await http("/admin/events", {
       headers: {
-        Authorization: `Bearer ${token}}`,
+        Authorization: `Bearer ${token}`,
       },
-    });
+    })
 
     return json.data.events ?? [];
   } catch (error) {
