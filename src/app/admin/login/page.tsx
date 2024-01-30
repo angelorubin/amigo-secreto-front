@@ -26,16 +26,18 @@ export default function Page() {
     }));
   };
 
-  const handleClick = async (event: MouseEvent<ReactNode>) => {
+  const handleClickLogin = async (event: MouseEvent<ReactNode>) => {
     event.preventDefault();
 
     if (inputValues.password) {
       const token = await api.login("", inputValues.password);
+      setLoading(true)
 
       if (!token) {
-        setAlert({ status: true, message: "Acesso negado." });
+        setAlert({ status: true, message: "Acesso Negado!" });
 
         setInterval(() => {
+          setLoading(false)
           setAlert({ status: false, message: "" });
         }, 2000);
 
@@ -46,8 +48,9 @@ export default function Page() {
           };
         });
       } else {
+        setLoading(false)
         setCookie("token", token);
-        router.push("/admin");
+        router.push("/admin")
       }
     }
   };
@@ -67,14 +70,14 @@ export default function Page() {
         />
 
         <Button
-          onClick={handleClick}
+          onClick={handleClickLogin}
           disabled={loading}
           className="my-3 p-3 rounded font-bold hover:bg-gray-600 bg-gray-700"
-          text="Entrar"
+          text={loading ? 'carregando...' : 'entrar'}
         />
 
         {alert.status ? (
-          <div className="grid justify-center border border-dashed text-red-700 border-red-400 p-3">
+          <div className="grid justify-center border border-dashed text-white border-red-400 p-3">
             {alert.message}
           </div>
         ) : null}

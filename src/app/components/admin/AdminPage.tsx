@@ -1,14 +1,11 @@
-"use client";
-import { useEffect, useState } from "react";
-import * as api from "@/utils/api/admin";
-import Logout from "../shared/logout";
-import { getEvents } from "@/utils/api/admin";
+"use client"
 import useSWR from 'swr'
+import { getEvents } from "@/utils/api/admin";
 import Loading from "../shared/loading";
 import { CustomCheckbox } from "../shared/custom-checkbox";
 
 export const AdminPage = () => {
-  const { data, error, isLoading } = useSWR(['get-events', '/admin/events'], getEvents)
+  const { data, isLoading } = useSWR(['get-events', '/admin/events'], getEvents)
 
   if (isLoading) {
     return <Loading />
@@ -17,7 +14,6 @@ export const AdminPage = () => {
   return (
     <div className="grid flex-col gap-4 w-screen">
       <h1 className="text-white text-3xl">Eventos</h1>
-      {JSON.stringify(data)}
       <div className="mt-3">
         <table className="table-auto">
           <thead className="border-b-2">
@@ -33,7 +29,7 @@ export const AdminPage = () => {
           <tbody className="">
             {!isLoading &&
               data.length > 0 &&
-              data.map((item) => (
+              data.map((item: any) => (
                 <tr className="border-b">
                   <td className="p-2">{item.id}</td>
                   <td className="p-2">
