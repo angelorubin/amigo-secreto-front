@@ -4,7 +4,7 @@ import { getEvents } from "@/utils/api/admin";
 import Loading from "../shared/loading";
 import { CustomCheckbox } from "../shared/custom-checkbox";
 
-export const AdminPage = () => {
+export default function AdminPage() {
   const { data, isLoading } = useSWR(['get-events', '/admin/events'], getEvents)
 
   if (isLoading) {

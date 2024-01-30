@@ -13,7 +13,7 @@ export const verifyToken = async () => {
       redirect("/admin/login");
     }
 
-    await http.get("/admin/ping", {
+    await http("/admin/ping", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

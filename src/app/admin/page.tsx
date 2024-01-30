@@ -1,18 +1,16 @@
-'use client'
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { verifyToken } from "@/utils/api/server";
-import { AdminPage } from "@/app/components/admin/AdminPage";
+import AdminPage from "@/app/components/admin/AdminPage";
 import { useState } from "react";
 import useSWR from "swr";
+import Loading from "../components/shared/loading";
 
-export default function Page() {
-  const { data, isLoading } = useSWR(['verify-token', '/admin/ping'], verifyToken)
-  // const router = useRouter()
-  const logged = true // await verifyToken();
+export default async function Page() {
+  const logged = await verifyToken();
 
-  if (!data) {
-    // redirect("/admin/login");
+  if (!logged) {
+    redirect("/admin/login");
   }
 
-  return <AdminPage />;
+  return <AdminPage />
 }
