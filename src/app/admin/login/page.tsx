@@ -6,6 +6,7 @@ import Button from "@/app/components/admin/Button";
 import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import * as api from "@/utils/api/admin";
+import { mutate } from 'swr'
 
 export default function Page() {
   const router = useRouter();
@@ -30,7 +31,9 @@ export default function Page() {
     event.preventDefault();
 
     if (inputValues.password) {
+
       const token = await api.login("", inputValues.password);
+
       setLoading(true)
 
       if (!token) {
@@ -58,7 +61,9 @@ export default function Page() {
   return (
     <div className="w-full my-3 border-1">
       <h1 className="mb-3 font-bold text-xl">Painel Admin - Login</h1>
+
       <p className="my-3">Qual a senha secreta?</p>
+
       <form className="grid gap-3 mb-3">
         <InputField
           id="password"

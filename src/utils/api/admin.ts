@@ -16,13 +16,7 @@ export const login = async (email: string, password: string) => {
 // Admin Events
 export const getEvents = async () => {
   try {
-    const token = getCookie('token', { cookies })
-
-    const json = await http("/admin/events", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const json = await http("/admin/events")
 
     return json.data.events ?? [];
   } catch (error) {
