@@ -6,7 +6,6 @@ import Button from "@/app/components/admin/Button";
 import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import * as api from "@/utils/api/admin";
-import { mutate } from 'swr'
 
 export default function Page() {
   const router = useRouter();
@@ -60,17 +59,24 @@ export default function Page() {
 
   return (
     <div className="w-full my-3 border-1">
-      <h1 className="mb-3 font-bold text-xl">Painel Admin - Login</h1>
-
-      <p className="my-3">Qual a senha secreta?</p>
+      <h1 className="mb-3 font-bold text-xl">Login</h1>
 
       <form className="grid gap-3 mb-3">
+        <InputField
+          id="email"
+          type="text"
+          value={inputValues.email}
+          onChange={handleChange}
+          placeholder="email"
+          errorMessage={"email inválido"}
+        />
+
         <InputField
           id="password"
           type="password"
           value={inputValues.password}
           onChange={handleChange}
-          placeholder="password"
+          placeholder="senha"
           errorMessage={"password inválido"}
         />
 

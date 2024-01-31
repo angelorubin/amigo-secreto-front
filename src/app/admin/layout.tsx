@@ -1,6 +1,5 @@
 import { Metadata } from "next"
 import { ReactNode } from "react"
-import Logout from "../components/shared/logout"
 
 export const metadata: Metadata = {
   title: "Amigo Secreto Admin"

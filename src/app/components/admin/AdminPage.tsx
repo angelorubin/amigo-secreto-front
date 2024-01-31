@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import { getEvents } from "@/utils/api/admin";
 import Loading from "../shared/loading";
 import { CustomCheckbox } from "../shared/custom-checkbox";
+import Logout from '../shared/logout';
 
 export default function AdminPage() {
   const { data, isLoading } = useSWR(['get-events', '/admin/events'], getEvents)
@@ -13,6 +14,7 @@ export default function AdminPage() {
 
   return (
     <div className="grid flex-col gap-4 w-screen">
+      <Logout />
       <h1 className="text-white text-3xl">Eventos</h1>
       <div className="mt-3">
         <table className="table-auto">
